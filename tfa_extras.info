@@ -1,0 +1,5 @@
+name = TFA Extras
+description = Adding extra functionality to the Two-Factory Authentication module
+core = 7.x
+dependecies[] = tfa
+files[] = tfa_extras_handler_field_boolean.inc
