@@ -8,7 +8,7 @@
 /**
  * Implements hook_views_data().
  */
-function tfa_extras_views_data() {
+function tfa_nudge_views_data() {
   // Basic table and data information.
   $data['tfa_user_settings']['table']['group'] = t('Two-Factor Authentication');
   $data['tfa_user_settings']['table']['base'] = array(
@@ -60,7 +60,7 @@ function tfa_extras_views_data() {
     'title' => t('TFA Status'),
     'help' => t('The status of the users two-factor authentication setup'),
     'field' => array(
-      'handler' => 'tfa_extras_handler_field_boolean',
+      'handler' => 'tfa_nudge_handler_field_boolean',
       'click sortable' => TRUE,
     ),
     'sort' => array(

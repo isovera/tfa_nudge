@@ -3,7 +3,7 @@
 /**
  * Implements hook_views_api().
  */
-function tfa_extras_views_api() {
+function tfa_nudge_views_api() {
   return array(
     'api' => '3.0',
   );

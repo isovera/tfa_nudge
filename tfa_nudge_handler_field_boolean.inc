@@ -1,6 +1,6 @@
 <?php
 
-class tfa_extras_handler_field_boolean extends views_handler_field {
+class tfa_nudge_handler_field_boolean extends views_handler_field {
   function option_definition() {
     $options = parent::option_definition();
     $options['type'] = array('default' => 'lock-icon');
