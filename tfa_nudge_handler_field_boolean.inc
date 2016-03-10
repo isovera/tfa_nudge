@@ -82,6 +82,7 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
       global $user;
       $lock_icon = array(
         '#title' => 'TFA enabled',
+        '#theme' => 'image',
         '#alt' => 'TFA enabled',
         '#path' => '/images/lock_icon.svg'
       );
@@ -95,6 +96,7 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
       global $user;
       $warning_icon = array(
         '#title' => 'TFA not enabled',
+        '#theme' => 'image',
         '#alt' => 'TFA not enabled',
         '#path' => '/images/warning_icon.svg'
       );
