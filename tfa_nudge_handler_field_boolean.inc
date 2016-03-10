@@ -80,10 +80,11 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
 
     if ($this->options['type'] == 'lock-icon') {
       global $user;
-      $lock_icon = array('#title' => 'TFA enabled',
-                         '#alt' => 'TFA enabled',
-                         '#path' => '/images/lock_icon.svg'
-                         );
+      $lock_icon = array(
+        '#title' => 'TFA enabled',
+        '#alt' => 'TFA enabled',
+        '#path' => '/images/lock_icon.svg'
+      );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($lock_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication enabled'), 'html'=>TRUE));
       }
@@ -92,10 +93,11 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
 
     if ($this->options['type'] == 'warning-icon') {
       global $user;
-      $warning_icon = array('#title' => 'TFA not enabled',
-                            '#alt' => 'TFA not enabled',
-                            '#path' => '/images/warning_icon.svg'
-                            );
+      $warning_icon = array(
+        '#title' => 'TFA not enabled',
+        '#alt' => 'TFA not enabled',
+        '#path' => '/images/warning_icon.svg'
+      );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($warning_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication not enabled'), 'html'=>TRUE));
       }
