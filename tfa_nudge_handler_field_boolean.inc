@@ -84,7 +84,7 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
         '#title' => 'TFA enabled',
         '#theme' => 'image',
         '#alt' => 'TFA enabled',
-        '#path' => 'drupal_get_path('image', 'lock_icon')'
+        '#path' => drupal_get_path('module', 'tfa_nudge') . '/images/lock_icon.svg',
       );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($lock_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication enabled'), 'html'=>TRUE));
@@ -98,7 +98,7 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
         '#title' => 'TFA not enabled',
         '#theme' => 'image',
         '#alt' => 'TFA not enabled',
-        '#path' => drupal_get_path('image', 'warning_icon')'
+        '#path' => drupal_get_path('module', 'tfa_nudge') . '/images/warning_icon.svg',
       );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($warning_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication not enabled'), 'html'=>TRUE));
