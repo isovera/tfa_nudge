@@ -80,7 +80,12 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
 
     if ($this->options['type'] == 'lock-icon') {
       global $user;
-      $lock_icon = '<svg width="16" height="16" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><title>TFA enabled</title><path d="M40 100c0-5.523 4.484-10 10.002-10h-2.504 125.005-2.505C175.522 90 180 94.485 180 100v100c0 5.523-4.48 10-9.998 10H49.998C44.476 210 40 205.515 40 200V100z" stroke="#9B9B9B" stroke-width="20" fill="#D8D8D8"/><path d="M60 68s0-58 50-58 50 58 50 58v22h-22V68s2-36-28-36-28 36-28 36v22H60V68z" fill="#9B9B9B"/></svg>';
+      $lock_icon = array(
+        '#title' => 'TFA enabled',
+        '#theme' => 'image',
+        '#alt' => 'TFA enabled',
+        '#path' => drupal_get_path('module', 'tfa_nudge') . '/images/lock_icon.svg',
+      );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($lock_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication enabled'), 'html'=>TRUE));
       }
@@ -89,7 +94,12 @@ class tfa_nudge_handler_field_boolean extends views_handler_field {
 
     if ($this->options['type'] == 'warning-icon') {
       global $user;
-      $warning_icon = '<svg width="16" height="16" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg"><path d="M95.743 20.235c7.84-14.596 20.55-14.594 28.386 0l87.716 163.337c7.84 14.596.77 26.428-15.807 26.428H23.832C7.265 210 .19 198.165 8.026 183.572L95.743 20.235z" stroke="#979797" stroke-width="20" fill="#F8E81C"/><path d="M97.686 84H123.5v19.82l-4.984 39.822h-15.964l-4.866-39.82V84zm.89 71.695h24.094V177H98.576v-21.305z" fill="#000"/></svg>';
+      $warning_icon = array(
+        '#title' => 'TFA not enabled',
+        '#theme' => 'image',
+        '#alt' => 'TFA not enabled',
+        '#path' => drupal_get_path('module', 'tfa_nudge') . '/images/warning_icon.svg',
+      );
       if(user_access('access user profiles', $user)) {
         $lock_icon = l($warning_icon, "user/$values->uid/security/tfa", array('attributes'=>array('title'=>'Two-factor authentication not enabled'), 'html'=>TRUE));
       }
