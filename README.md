@@ -1,6 +1,6 @@
 <h1>Two-Factor Authentication Nudge</h1>
 
-The TFA nudge module shows which users have two-factor authentication enabled and which users do not.
+The TFA nudge module is an extension of TFA module. Its purpose is to show which users have two-factor authentication enabled and which users do not.
 
 <h3>Usage</h3>
 
