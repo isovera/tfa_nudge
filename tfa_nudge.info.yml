@@ -1,0 +1,9 @@
+name:  TFA Nudge
+type: module
+description:  'Adding extra functionality to the Two-Factory Authentication module'
+package: Other
+configure: tfa_nudge.settings
+core:  8.x
+dependencies: 
+  - tfa
+  - admin_views
