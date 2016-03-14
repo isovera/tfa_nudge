@@ -57,7 +57,7 @@ function tfa_nudge_views_data() {
 
   // TFA Status
   $data['tfa_user_settings']['status'] = array(
-    'title' => t('TFA Status'),
+    'title' => t('Two-Factor Security'),
     'help' => t('The status of the users two-factor authentication setup'),
     'field' => array(
       'handler' => 'tfa_nudge_handler_field_boolean',
@@ -67,8 +67,8 @@ function tfa_nudge_views_data() {
       'handler' => 'views_handler_sort',
     ),
     'filter' => array(
-      'label' => t('TFA Status'),
       'handler' => 'tfa_nudge_handler_filter_boolean_operator',
+      'label' => t('Two-Factor Security'),
       'type' => 'enabled-disabled',
       'use equal' => TRUE,
     )
