@@ -4,3 +4,4 @@ core = 7.x
 dependencies[] = tfa
 dependencies[] = admin_views
 files[] = tfa_nudge_handler_field_boolean.inc
+files[] = tfa_nudge_handler_filter_boolean_operator.inc

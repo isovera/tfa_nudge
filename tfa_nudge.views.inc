@@ -67,8 +67,8 @@ function tfa_nudge_views_data() {
       'handler' => 'views_handler_sort',
     ),
     'filter' => array(
-      'handler' => 'views_handler_filter_boolean_operator',
       'label' => t('TFA Status'),
+      'handler' => 'tfa_nudge_handler_filter_boolean_operator',
       'type' => 'enabled-disabled',
       'use equal' => TRUE,
     )
