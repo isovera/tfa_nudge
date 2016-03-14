@@ -4,9 +4,9 @@ The TFA nudge module is an extension of TFA module. Its purpose is to show which
 
 ### Usage
 
-Create an extra field on you-site/admin/people that displays a boolean value representing which users have TFA
+- Create an extra field on you-site/admin/people that displays a boolean value representing which users have TFA
 
-Filter by that value
+- Filter by that value
 
 ### Installation
 
