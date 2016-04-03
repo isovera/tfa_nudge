@@ -1,0 +1,37 @@
+<?php
+/**
+ * Implements hook_schema()
+ */
+function tfa_nudge_schema(){
+  $schema['tfa_nudge'] = array(
+    'description' => 'Stores the subject line and body of tfa_nudge reminder email',
+    'fields' => array(
+      'id' => array(
+        'description' => 'Entry identification number',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ),
+      'subject' => array(
+        'description' => 'Email subject line',
+        'type' => 'text',
+        'not null' => TRUE,
+        'default' => 'Please enable Two Factor Authentication',
+      ),
+      'body' => array(
+        'description' => 'Email body',
+        'type' => 'longtext',
+        'not null' => TRUE,
+        'default' => 'You have not enabled your two factor authentication yet',
+      ),
+    ),
+    'primary_key' => array('id'),
+    'indexes' => array(
+      'subject' => array('subject'),
+      'body' => array('body'),
+  ),
+);
+
+  return $schema;
+}

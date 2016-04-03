@@ -8,3 +8,34 @@ function tfa_nudge_views_api() {
     'api' => '3.0',
   );
 }
+
+/**
+ * Implements hook_menu()
+ */
+function tfa_nudge_menu(){
+  $items = array();
+  $items['admin/config/content/tfa_nudge'] = array(
+    'title' => 'TFA Nudge Settings',
+    'description' => 'Administer TFA Nudge Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tfa_nudge_admin_settings_form'),
+    'access arguments' => array('administer tfa_nudge settings'),
+    'file' => 'tfa_nudge.admin.inc',
+  );
+
+  return $items;
+}
+
+function tfa_nudge_permission(){
+  $perm = array(
+    'administer tfa_nudge settings' => array(
+      'title' => t('Administer TFA Nudge Settings'),
+    )
+  );
+
+  return $perm;
+}
+
+function tfa_nudge_callback(){
+  return 'This is tfa_nudge_callback()';
+}
