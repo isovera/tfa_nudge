@@ -1,8 +1,5 @@
 # Two-Factor Authentication Nudge
 
-The TFA nudge module is an extension of TFA module. Its purpose is to show which users have two-factor authentication enabled and which users do not.
-
-
 ### Overview
 
 A strict policy of requiring two-factor authentication can sometimes be onerous for users. The purpose of this module is to help site administrators give users a gentle, but insistent [nudge] (https://en.wikipedia.org/wiki/Nudge_(book)) to set up two-factor authentication.
