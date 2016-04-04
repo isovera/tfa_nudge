@@ -2,6 +2,19 @@
 
 The TFA nudge module is an extension of TFA module. Its purpose is to show which users have two-factor authentication enabled and which users do not.
 
+
+### Overview
+
+A strict policy of requiring two-factor authentication can sometimes be onerous for users. The purpose of this module is to help site administrators give users a gentle, but insistent [nudge] (https://en.wikipedia.org/wiki/Nudge_(book)) to set up two-factor authentication.
+
+It makes two fields available to the [Administration Views] (https://www.drupal.org/project/admin_views) module: <i>Two-factor Security Status</i> and <i>Two-factor Saved Date</i>. It also provides a filter that can be exposed to selectively display a list of users based on their TFA status.
+
+### Requirements
+
+* [Two-factor Authentication (TFA)] (https://www.drupal.org/project/tfa)
+* [TFA Basic plugins] (https://www.drupal.org/project/tfa_basic)
+* [Administration Views] (https://www.drupal.org/project/admin_views)
+
 ### Usage
 
 - Create an extra field on you-site/admin/people that displays a boolean value representing which users have TFA
