@@ -8,3 +8,51 @@ function tfa_nudge_views_api() {
     'api' => '3.0',
   );
 }
+
+/**
+ * Implements hook_menu()
+ */
+function tfa_nudge_menu(){
+  $items = array();
+  $items['admin/config/people/tfa_nudge'] = array(
+    'title' => 'Two-factor Authentication Nudge Settings',
+    'description' => 'Manage TFA Nudge Settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tfa_nudge_admin_settings_form', 1),
+    'access arguments' => array('administer tfa_nudge settings'),
+    'file' => 'tfa_nudge.admin.inc',
+  );
+
+  return $items;
+}
+
+function tfa_nudge_permission(){
+  $perm = array(
+    'administer tfa_nudge settings' => array(
+      'title' => t('Administer TFA Nudge Settings'),
+    )
+  );
+
+  return $perm;
+}
+
+function tfa_nudge_callback(){
+  return 'This is tfa_nudge_callback()';
+}
+
+function tfa_nudge_settings($id, $subject, $body){
+  $value = array(
+    'id' => $id,
+    'subject' => $subject,
+    'body' => $body,
+  );
+
+  drupal_write_record('tfa_nudge', $value);
+}
+
+function tfa_nudge_admin_settings_form_submit($form, &$form_state){
+  $id = isset($form_state['values']['id']) ? $form_state['values']['id'] : 0;
+  $subject = $form_state['values']['subject'];
+  $body = $form_state['values']['body'];
+  tfa_nudge_settings($id, $subject, $body);
+}
