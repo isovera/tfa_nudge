@@ -8,17 +8,16 @@ function tfa_nudge_admin_settings_form($form, $form_state, $nid = 0){
     '#type' => 'textfield',
     '#size' => '50',
     '#required' => TRUE,
+    '#default_value' => variable_get('subject', 'You have not yet enabled TFA'),
   );
   $form['body'] = array(
     '#title' => t('Body Text'),
     '#descirption' => t('Default email body.'),
     '#type' => 'textarea',
     '#size' => '20',
-  );
-  $form['submit'] = array(
-    '#type' => 'submit',
-    '#value' => t('Save'),
+    '#default_value' => variable_get('body', 'Dear [user:name],
+    You have not yet enabled TFA! Please do so in the interest of our site\'s security.  ---[site:name] team'),
   );
 
-  return $form;
+  return system_settings_form($form);
 }
