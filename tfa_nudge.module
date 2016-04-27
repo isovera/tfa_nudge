@@ -56,3 +56,9 @@ function tfa_nudge_admin_settings_form_submit($form, &$form_state){
   $body = $form_state['values']['body'];
   tfa_nudge_settings($id, $subject, $body);
 }
+function tfa_nudge_reminder_mail($key, &$message){
+  $message['subject'] = variable_get('subject', 'Hey you dont have tfa enabled');
+  $message['body'] = variable_get('body', 'Enable it');
+  dpm($message);
+  drupal_mail_system()->mail($message);
+}
