@@ -38,14 +38,35 @@ function tfa_nudge_permission(){
   return $perm;
 }
 
+/**
+ * Implements hook_action_info().
+ */
+function tfa_nudge_action_info() {
+  return array(
+    'send_tfa_reminder_email' => array(
+      'type' => 'user',
+      'label' => t('Send TFA Reminder Email'),
+      'configurable' => FALSE,
+      'pass rows' => TRUE,
+      'triggers' => array('any'),
+    ),
   );
-
 }
 
+function send_tfa_reminder_email($user, $context) {
+  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $user);
 }
-function tfa_nudge_reminder_mail($key, &$message){
-  $message['subject'] = variable_get('subject', 'Hey you dont have tfa enabled');
-  $message['body'] = variable_get('body', 'Enable it');
-  dpm($message);
+
+/**
+ * Implements hook_mail().
+ */
+function tfa_nudge_mail($key, &$message, $user){
+  $subject =  variable_get('tfan_reminder_email_subject', 'I could not get your variable');
+  $subject = token_replace($subject);
+  $body = variable_get('tfan_reminder_email_body', 'I could not get your variable');
+  $body = token_replace($body, array('user' => $user));
+  $message['subject'] = 'subject test';
+  $message['body'] = 'body test';
   drupal_mail_system()->mail($message);
 }
+
