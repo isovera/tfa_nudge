@@ -43,7 +43,7 @@ function tfa_nudge_permission(){
  */
 function tfa_nudge_action_info() {
   return array(
-    'send_tfa_reminder_email' => array(
+    'tfa_nudge_reminder_email' => array(
       'type' => 'user',
       'label' => t('Send TFA Reminder Email'),
       'configurable' => FALSE,
@@ -53,20 +53,23 @@ function tfa_nudge_action_info() {
   );
 }
 
-function send_tfa_reminder_email($user, $context) {
-  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $user);
+function tfa_nudge_reminder_email($user, $context) {
+  $subject =  variable_get('tfan_reminder_email_subject');
+  $subject = token_replace($subject);
+  $body = variable_get('tfan_reminder_email_body');
+  $body = token_replace($body, array('user' => $user));
+  $params = array(
+    'subject' => $subject,
+    'body' => $body,
+  );
+  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
 }
 
 /**
  * Implements hook_mail().
  */
-function tfa_nudge_mail($key, &$message, $user){
-  $subject =  variable_get('tfan_reminder_email_subject', 'I could not get your variable');
-  $subject = token_replace($subject);
-  $body = variable_get('tfan_reminder_email_body', 'I could not get your variable');
-  $body = token_replace($body, array('user' => $user));
-  $message['subject'] = 'subject test';
-  $message['body'] = 'body test';
-  drupal_mail_system()->mail($message);
+function tfa_nudge_mail($key, &$message, $params){
+  $message['subject'] = $params['subject'];
+  $message['body'] = array($params['body']);
 }
 

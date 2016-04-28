@@ -15,8 +15,7 @@ function tfa_nudge_admin_settings_form($form, $form_state){
     '#descirption' => t('Default email body.'),
     '#type' => 'textarea',
     '#size' => '20',
-    '#default_value' => variable_get('tfan_reminder_email_body', 'Dear [user:name],
-    You have not yet enabled TFA! Please do so in the interest of [site:name]\'s security.'),
+    '#default_value' => variable_get('tfan_reminder_email_body', 'Dear [user:name],' . "\r\n" . 'You have not yet enabled TFA! Please do so in the interest of [site:name] security.'),
   );
   return system_settings_form($form);
 }
