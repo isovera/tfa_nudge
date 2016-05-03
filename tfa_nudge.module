@@ -8,3 +8,68 @@ function tfa_nudge_views_api() {
     'api' => '3.0',
   );
 }
+
+/**
+ * Implements hook_menu()
+ */
+function tfa_nudge_menu(){
+  $items = array();
+  $items['admin/config/people/tfa_nudge'] = array(
+    'title' => 'Two-factor Authentication Nudge Settings',
+    'description' => 'Manage TFA Nudge Settings',
+    'page callback' => 'drupal_get_form',
+    'type' => MENU_CALLBACK,
+    'page arguments' => array('tfa_nudge_admin_settings_form', 1),
+    'access arguments' => array('administer tfa_nudge settings'),
+    'file' => 'tfa_nudge.admin.inc',
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function tfa_nudge_permission(){
+  $perm = array(
+    'administer tfa_nudge settings' => array(
+      'title' => t('Administer TFA Nudge Settings'),
+    )
+  );
+  return $perm;
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function tfa_nudge_action_info() {
+  return array(
+    'tfa_nudge_reminder_email' => array(
+      'type' => 'user',
+      'label' => t('Send TFA Reminder Email'),
+      'configurable' => FALSE,
+      'pass rows' => TRUE,
+      'triggers' => array('any'),
+    ),
+  );
+}
+
+function tfa_nudge_reminder_email($user, $context) {
+  $subject =  variable_get('tfan_reminder_email_subject');
+  $subject = token_replace($subject);
+  $body = variable_get('tfan_reminder_email_body');
+  $body = token_replace($body, array('user' => $user));
+  $params = array(
+    'subject' => $subject,
+    'body' => $body,
+  );
+  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
+}
+
+/**
+ * Implements hook_mail().
+ */
+function tfa_nudge_mail($key, &$message, $params){
+  $message['subject'] = $params['subject'];
+  $message['body'] = array($params['body']);
+}
+
