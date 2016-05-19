@@ -6,4 +6,4 @@ dependencies[] = admin_views
 dependencies[] = tfa_basic
 files[] = tfa_nudge_handler_field_boolean.inc
 files[] = tfa_nudge_handler_filter_boolean_operator.inc
-configure = admin/config/content/tfa_nudge
+configure = admin/config/people/tfa_nudge
