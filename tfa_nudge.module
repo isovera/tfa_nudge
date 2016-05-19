@@ -54,9 +54,9 @@ function tfa_nudge_action_info() {
 }
 
 function tfa_nudge_reminder_email($user, $context) {
-  $subject =  variable_get('tfan_reminder_email_subject');
+  $subject =  variable_get('tfan_reminder_email_subject', 'You have not yet enabled two factor authentication on [site:name]');
   $subject = token_replace($subject);
-  $body = variable_get('tfan_reminder_email_body');
+  $body = variable_get('tfan_reminder_email_body', 'Dear [user:name],' . "\r\n" . 'You have not yet enabled TFA! Please do so in the interest of [site:name] security.');
   $body = token_replace($body, array('user' => $user));
   $params = array(
     'subject' => $subject,
