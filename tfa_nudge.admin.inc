@@ -18,6 +18,12 @@ function tfa_nudge_admin_settings_form($form, $form_state){
     '#required' => TRUE,
     '#default_value' => variable_get('tfan_reminder_email_body', 'Dear [user:name],' . "\r\n" . 'You have not yet enabled TFA! Please do so in the interest of [site:name] security.'),
   );
+  $form['tokens'] = array(
+    '#theme' => 'token_tree_link',
+    '#token_types' => array('user'),
+    '#global_types' => TRUE,
+    '#click_insert' => TRUE,
+  );
   return system_settings_form($form);
 }
 
