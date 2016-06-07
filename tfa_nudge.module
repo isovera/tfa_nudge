@@ -53,16 +53,28 @@ function tfa_nudge_action_info() {
   );
 }
 
-function tfa_nudge_reminder_email($user, $context) {
-  $subject =  variable_get('tfan_reminder_email_subject', 'You have not yet enabled two factor authentication on [site:name]');
-  $subject = token_replace($subject);
-  $body = variable_get('tfan_reminder_email_body', 'Dear [user:name],' . "\r\n" . 'You have not yet enabled TFA! Please do so in the interest of [site:name] security.');
-  $body = token_replace($body, array('user' => $user));
-  $params = array(
-    'subject' => $subject,
-    'body' => $body,
-  );
-  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
+/**
+ * @param $user
+ *  A user object for whom an email will be sent
+ */
+function tfa_nudge_reminder_email($user) {
+  $record = db_select('tfa_user_settings', 'u')
+    ->fields('u')
+    ->condition('uid', $user->uid,'=')
+    ->execute()
+    ->fetchAssoc();
+  if (!isset($record['status']) || $record['status'] == '0') {
+    $settings = variable_get('tfan_settings');
+    $subject = (!empty($settings['subject'])) ? $settings['subject'] : 'Please enable TFA on [site:name]';
+    $subject = token_replace($subject);
+    $body = (!empty($settings['body'])) ? $settings['body'] : 'Please enable TFA on [site:name]';
+    $body = token_replace($body, array('user' => $user));
+    $params = array(
+      'subject' => $subject,
+      'body' => $body,
+    );
+    drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
+  }
 }
 
 /**
