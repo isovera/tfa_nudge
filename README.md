@@ -24,7 +24,12 @@ This will create a field on your users table that displays an icon that indicate
 
 ### Configuration
 
-You can change the configuration in your-site/admin/structure/views/view/admin_views_user/edit to show an icon for TFA users only, non-TFA users only, display 'yes' or 'no', checks or x's, '1' or '0', etc. instead of icons.
+To configure list of users in [Administration Views] (https://www.drupal.org/project/admin_views) go to your-site/admin/structure/views/view/admin_views_user/edit.
+
+ * Set up email notifications
+  * Go to Two-factor Authentication Settings in Configuration 
+  * Edit the subject and body of the notifications
+  * Click "Enable email notifications"
 
 ### Project Information
 
