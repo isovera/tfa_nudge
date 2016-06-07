@@ -38,8 +38,3 @@ This will enable regular email notifications to be sent to users who have not se
   * Click "Enable in-site notifications
 
 This will produce a one-time message upon login for users who have not set up TFA.
-
-### Project Information
-
-Maintenance status: Actively maintained
-Development status: Under active development
