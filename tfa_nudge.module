@@ -85,3 +85,62 @@ function tfa_nudge_mail($key, &$message, $params){
   $message['body'] = array($params['body']);
 }
 
+/**
+ * Implementation of hook_cron_queue_info()
+ */
+function tfa_nudge_cron_queue_info() {
+  $queues['tfa_nudge'] = array(
+    'worker callback' => 'tfa_nudge_reminder_email', // This is the callback function for each queue item.
+    'time' => 180, // This is the max run time per cron run in seconds.
+  );
+  return $queues;
+}
+
+/**
+ * Implementation of hook_cron()
+ */
+function tfa_nudge_cron() {
+  $settings = variable_get('tfan_settings');
+
+  if ($settings['auto_emails'] == 'yes') {
+    if (!isset($settings['last_sent'])) {
+      // If last_sent isn't set, this is the first time auto emails have been sent.
+      $settings['last_sent'] = REQUEST_TIME;
+      variable_set('tfan_settings', $settings);
+    }
+
+    // Convert interval to seconds to compare to last sent timestamp
+    $interval = $settings['interval'] * 24 * 60 * 60;
+
+    if (REQUEST_TIME - $settings['last_sent'] >= $interval){
+      $uids = array();
+      $users_roles = array();
+
+      foreach ($settings['roles'] as $rid) {
+        // Query database for all users with role $rid
+        $records = db_select('users_roles', 'u')
+          ->fields('u')
+          ->condition('rid', $rid,'=')
+          ->execute();
+        foreach ($records as $record) {
+          $uids[] = $record->uid;
+        }
+        // $users_roles becomes a 2 dimensional array of user objects keyed by $rid
+        $users_roles[$rid] = user_load_multiple($uids);
+      }
+
+      // Put everything in a queue for processing.
+      $queue = DrupalQueue::get('tfa_nudge');
+      // Iterate through each role
+      foreach ($users_roles as $role) {
+        // Iterate through each user object of a given role
+        foreach ($role as $user) {
+          $queue->createItem($user, $settings);
+        }
+      }
+      // Update last_sesnt to current time
+      $settings['last_sent'] = REQUEST_TIME;
+      variable_set('tfan_settings', $settings);
+    }
+  }
+}
