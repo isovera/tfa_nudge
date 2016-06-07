@@ -30,6 +30,14 @@ To configure list of users in [Administration Views] (https://www.drupal.org/pro
   * Go to Two-factor Authentication Settings in Configuration 
   * Edit the subject and body of the notifications
   * Click "Enable email notifications"
+ 
+This will enable regular email notifications to be sent to users who have not set up TFA.
+
+ * Set up in-site one-time messages
+  * Go to Two-factor Authentication Settings in Configuration 
+  * Click "Enable in-site notifications
+
+This will produce a one-time message upon login for users who have not set up TFA.
 
 ### Project Information
 
