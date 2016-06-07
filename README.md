@@ -12,12 +12,6 @@ It makes two fields available to the [Administration Views] (https://www.drupal.
 * [TFA Basic plugins] (https://www.drupal.org/project/tfa_basic)
 * [Administration Views] (https://www.drupal.org/project/admin_views)
 
-### Usage
-
-- Create an extra field on you-site/admin/people that displays a boolean value representing which users have TFA
-
-- Filter by that value
-
 ### Installation
 
  1. download and enable tfa_nudge and admin_views
@@ -31,3 +25,8 @@ This will create a field on your users table that displays an icon that indicate
 ### Configuration
 
 You can change the configuration in your-site/admin/structure/views/view/admin_views_user/edit to show an icon for TFA users only, non-TFA users only, display 'yes' or 'no', checks or x's, '1' or '0', etc. instead of icons.
+
+### Project Information
+
+Maintenance status: Actively maintained
+Development status: Under active development
