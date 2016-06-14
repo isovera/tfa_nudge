@@ -53,16 +53,28 @@ function tfa_nudge_action_info() {
   );
 }
 
-function tfa_nudge_reminder_email($user, $context) {
-  $subject =  variable_get('tfan_reminder_email_subject', 'You have not yet enabled two factor authentication on [site:name]');
-  $subject = token_replace($subject);
-  $body = variable_get('tfan_reminder_email_body', 'Dear [user:name],' . "\r\n" . 'You have not yet enabled TFA! Please do so in the interest of [site:name] security.');
-  $body = token_replace($body, array('user' => $user));
-  $params = array(
-    'subject' => $subject,
-    'body' => $body,
-  );
-  drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
+/**
+ * @param $user
+ *  A user object for whom an email will be sent
+ */
+function tfa_nudge_reminder_email($user) {
+  $record = db_select('tfa_user_settings', 'u')
+    ->fields('u')
+    ->condition('uid', $user->uid,'=')
+    ->execute()
+    ->fetchAssoc();
+  if (!isset($record['status']) || $record['status'] == '0') {
+    $settings = variable_get('tfan_settings');
+    $subject = (!empty($settings['subject'])) ? $settings['subject'] : 'Please enable TFA on [site:name]';
+    $subject = token_replace($subject);
+    $body = (!empty($settings['body'])) ? $settings['body'] : 'Please enable TFA on [site:name]';
+    $body = token_replace($body, array('user' => $user));
+    $params = array(
+      'subject' => $subject,
+      'body' => $body,
+    );
+    drupal_mail('tfa_nudge', 'notice', $user->mail, user_preferred_language($user), $params);
+  }
 }
 
 /**
@@ -73,3 +85,80 @@ function tfa_nudge_mail($key, &$message, $params){
   $message['body'] = array($params['body']);
 }
 
+/**
+ * Implementation of hook_cron_queue_info()
+ */
+function tfa_nudge_cron_queue_info() {
+  $queues['tfa_nudge'] = array(
+    'worker callback' => 'tfa_nudge_reminder_email', // This is the callback function for each queue item.
+    'time' => 180, // This is the max run time per cron run in seconds.
+  );
+  return $queues;
+}
+
+/**
+ * Implementation of hook_cron()
+ */
+function tfa_nudge_cron() {
+  $settings = variable_get('tfan_settings');
+
+  if ($settings['auto_emails'] == 'yes') {
+    if (!isset($settings['last_sent'])) {
+      // If last_sent isn't set, this is the first time auto emails have been sent.
+      $settings['last_sent'] = REQUEST_TIME;
+      variable_set('tfan_settings', $settings);
+    }
+
+    // Convert interval to seconds to compare to last sent timestamp
+    $interval = $settings['interval'] * 24 * 60 * 60;
+
+    if (REQUEST_TIME - $settings['last_sent'] >= $interval){
+      $uids = array();
+      $users_roles = array();
+
+      foreach ($settings['roles'] as $rid) {
+        // Query database for all users with role $rid
+        $records = db_select('users_roles', 'u')
+          ->fields('u')
+          ->condition('rid', $rid,'=')
+          ->execute();
+        foreach ($records as $record) {
+          $uids[] = $record->uid;
+        }
+        // $users_roles becomes a 2 dimensional array of user objects keyed by $rid
+        $users_roles[$rid] = user_load_multiple($uids);
+      }
+
+      // Put everything in a queue for processing.
+      $queue = DrupalQueue::get('tfa_nudge');
+      // Iterate through each role
+      foreach ($users_roles as $role) {
+        // Iterate through each user object of a given role
+        foreach ($role as $user) {
+          $queue->createItem($user, $settings);
+        }
+      }
+      // Update last_sesnt to current time
+      $settings['last_sent'] = REQUEST_TIME;
+      variable_set('tfan_settings', $settings);
+    }
+  }
+}
+/**
+* Implements hook_user_login()
+*/
+function tfa_nudge_user_login($form, &$form_state) {
+  $settings = variable_get('tfan_settings');
+
+  if ($settings['get_notifications'] == 'yes') {
+    $tfa_not_enbled = db_select('tfa_user_settings', 'status')
+      ->fields('status')
+      ->condition('status', '0', '=')
+      ->execute()
+      ->fetchAssoc();
+
+    if ($tfa_not_enbled) {
+      drupal_set_message(t("You still need to " . l('enable tfa.', "/user/{$GLOBALS['user']->uid}/security/tfa")), 'warning');
+    }
+  }
+}
