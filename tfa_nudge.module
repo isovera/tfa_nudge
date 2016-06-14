@@ -144,3 +144,21 @@ function tfa_nudge_cron() {
     }
   }
 }
+/**
+* Implements hook_user_login()
+*/
+function tfa_nudge_user_login($form, &$form_state) {
+  $settings = variable_get('tfan_settings');
+
+  if ($settings['get_notifications'] == 'yes') {
+    $tfa_not_enbled = db_select('tfa_user_settings', 'status')
+      ->fields('status')
+      ->condition('status', '0', '=')
+      ->execute()
+      ->fetchAssoc();
+
+    if ($tfa_not_enbled) {
+      drupal_set_message(t("You still need to " . l('enable tfa.', "/user/{$GLOBALS['user']->uid}/security/tfa")), 'warning');
+    }
+  }
+}
