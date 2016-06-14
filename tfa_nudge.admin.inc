@@ -34,7 +34,7 @@ function tfa_nudge_admin_settings_form($form, $form_state){
   );
   $form['tfan_settings']['auto_emails'] = array(
     '#title' => t('Enable automated reminder emails'),
-    '#description' => t('Select weather or not to enable automated TFA Nudge reminder emails'),
+    '#description' => t('Select whether or not to enable automated TFA Nudge reminder emails'),
     '#type' => 'radios',
     '#default_value' => (!empty($defaults['auto_emails'])) ? $defaults['auto_emails'] : 'no',
     '#options' => array(
