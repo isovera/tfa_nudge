@@ -42,6 +42,16 @@ function tfa_nudge_admin_settings_form($form, $form_state){
       'no' => 'no',
     ),
   );
+  $form['tfan_settings']['get_notifications'] = array(
+    '#title' => t('Enable notifications upon login'),
+    '#description' => t('Select whether or not to enable automated TFA Nudge post-login notifications'),
+    '#type' => 'radios',
+    '#default_value' => (!empty($defaults['get_notifications'])) ? $defaults['get_notifications'] : 'no',
+    '#options' => array(
+      'yes' => 'yes',
+      'no' => 'no',
+    ),
+  );
   $form['tfan_settings']['interval'] = array(
     '#title' => t('Reminder email interval'),
     '#description' => t('Enter an interval in days for sending reminder emails. The first round of emails will be sent the next time cron runs. All entries will be rounded down to whole numbers.'),
